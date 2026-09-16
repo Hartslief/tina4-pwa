@@ -1,0 +1,10 @@
+-- Migration: create_cart
+-- Created: 2026-09-16 16:15:47
+
+CREATE TABLE IF NOT EXISTS cart (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER DEFAULT 0,
+    status VARCHAR(255) DEFAULT '',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

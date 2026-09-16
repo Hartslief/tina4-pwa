@@ -1,0 +1,19 @@
+{% extends "base.twig" %}
+{% block title %}Product {% if item.id %}Edit{% else %}Create{% endif %}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1>{% if item.id %}Edit Product{% else %}Create Product{% endif %}</h1>
+    <form method="post" action="/api/products{% if item.id %}/{{ item.id }}{% endif %}">
+        {{ form_token() }}
+        {# tina4:edit  customise the form fields here #}
+    <div class="form-group mb-3">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" class="form-control" value="{{ item.name }}" placeholder="Name">
+    </div>
+    <button type="submit" class="btn btn-primary">
+        {% if item.id %}Update{% else %}Create{% endif %}
+    </button>
+    <a href="/api/products" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
