@@ -32,7 +32,6 @@ The application demonstrates a complete basic ecommerce flow:
 ### Backend
 
 * Tina4 Python
-* Python
 * SQLite
 * Tina4 ORM
 * JWT authentication
@@ -55,8 +54,6 @@ tina4-pwa-project/
 └── frontend/
     ├── src/
     │   ├── components/
-    │   │   ├── admin-product-form.ts
-    │   │   ├── admin-user-form.ts
     │   │   ├── navigation.ts
     │   │   └── product-card.ts
     │   │
@@ -84,7 +81,7 @@ tina4-pwa-project/
     │
     └── vite.config.ts
 ```
-
+    
 ---
 
 # Features
@@ -363,8 +360,6 @@ For example:
 ```text
 product-card.ts
 navigation.ts
-admin-product-form.ts
-admin-user-form.ts
 ```
 
 This keeps reusable UI separate from page-specific logic.
@@ -558,16 +553,6 @@ count.value = 5;
 
 expect(count.value).toBe(5);
 ```
-
-Testing can be expanded to cover:
-
-* Authentication state
-* Cart state
-* API services
-* Product components
-* Admin functionality
-* Checkout behavior
-
 ---
 
 # Development Notes
@@ -594,7 +579,7 @@ instead of directly specifying the backend URL.
 
 ## Route Registration
 
-Routes and components are automatically loaded by `main.ts` using Vite's eager glob imports.
+Routes and components are automatically loaded by `main.ts` using Tina4's eager glob imports.
 
 ```typescript
 import.meta.glob(
