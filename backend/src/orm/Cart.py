@@ -1,6 +1,4 @@
-from tina4_python.orm import ORM, DateTimeField, ForeignKeyField, IntegerField, StringField
-from src.orm.User import User
-
+from tina4_python.orm import ORM, DateTimeField, IntegerField, StringField
 
 class Cart(ORM):
     table_name = "cart"
@@ -9,7 +7,5 @@ class Cart(ORM):
 
     user_id = IntegerField()
     status = StringField()
-
-    user = ForeignKeyField(to=User)
 
     created_at = DateTimeField()

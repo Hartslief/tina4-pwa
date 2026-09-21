@@ -1,14 +1,27 @@
 import { Tina4Element, html } from "tina4js";
 
 class ProductCard extends Tina4Element {
-    static props = {
-        name: String,
-        description: String,
-        price: String,
-        in_stock: String,
-    };
+	/* 
+        Product card component. 
+        
+        This component displays a single product and allows 
+        the user to add it to their cart.
+    */
 
-    static styles = `
+	/* 
+        Define the properties that can be passed into the custom element. 
+        Tina4JS exposes these properties through this.prop().
+    */
+	static props = {
+		id: String,
+		name: String,
+		description: String,
+		price: String,
+		in_stock: String,
+	};
+
+	// CSS styles scoped to this component.
+	static styles = `
         :host {
             display: block;
         }
@@ -76,7 +89,7 @@ class ProductCard extends Tina4Element {
             width: 100%;
             padding: 0.75rem 1rem;
 
-            border: 1px solid #45475a;
+            border: none;
             border-radius: 6px;
 
             background: #89b4fa;
@@ -86,8 +99,6 @@ class ProductCard extends Tina4Element {
             font-weight: 600;
 
             cursor: pointer;
-
-            transition: background 0.15s;
         }
 
         button:hover:not(:disabled) {
@@ -95,55 +106,68 @@ class ProductCard extends Tina4Element {
         }
 
         button:disabled {
-            background: #45475a;
-            color: #6c7086;
+            opacity: 0.5;
             cursor: not-allowed;
         }
     `;
 
-    render() {
-        return html`
-            <article class="product-card">
-                <div class="product-details">
-                    <h2>${this.prop("name")}</h2>
+	render() {
+		return html`
+			<article class="product-card">
+				<!-- Product information section -->
+				<div class="product-details">
+					<!-- Display the product name. -->
+					<h2>${this.prop("name")}</h2>
 
-                    <p class="description">${this.prop("description")}</p>
-                </div>
+					<!-- Display the product description. -->
+					<p class="description">${this.prop("description")}</p>
+				</div>
 
-                <div class="product-actions">
-                    <p class="price">R${this.prop("price")}</p>
+				<!-- Product price, stock status, and cart button. -->
+				<div class="product-actions">
+					<!-- Display the product price. -->
+					<p class="price">R${this.prop("price")}</p>
 
-                    <p class="stock">
-                        ${() =>
-                            this.prop("in_stock").value === "true"
-                                ? "In stock"
-                                : html`
-                                      <span class="out-of-stock">
-                                          Out of stock
-                                      </span>
-                                  `}
-                    </p>
+					<!-- Display the current stock status. -->
+					<p class="stock">
+						${() =>
+							this.prop("in_stock").value === "true"
+								? "In stock"
+								: html` <span class="out-of-stock"> Out of stock </span> `}
+					</p>
 
-                    <button
-                        ?disabled=${() =>
-                            this.prop("in_stock").value !== "true"}
-                        @click=${() => this.addToCart()}
-                    >
-                        Add to Cart
-                    </button>
-                </div>
-            </article>
-        `;
-    }
+					<!-- Disable the button when the product is out of stock. -->
+					<button
+						?disabled=${() => this.prop("in_stock").value !== "true"}
 
-    addToCart() {
-        this.dispatchEvent(
-            new CustomEvent("add-to-cart", {
-                bubbles: true,
-                composed: true,
-            }),
-        );
-    }
+                        // Dispatch a custom event when the user clicks Add to Cart.
+						@click=${() => this.addToCart()}
+					>
+						Add to Cart
+					</button>
+				</div>
+			</article>
+		`;
+	}
+
+	// Notify the parent component/page that the user wants to add this product to the cart.
+	addToCart() {
+		// Create a custom "add-to-cart" browser event.
+		this.dispatchEvent(
+			new CustomEvent("add-to-cart", {
+				// Allow parent elements to listen for the event.
+				bubbles: true,
+
+				// Allow the event to cross the Shadow DOM boundary.
+				composed: true,
+
+				// Include the product ID in the event.
+				detail: {
+					productId: Number(this.prop("id").value),
+				},
+			}),
+		);
+	}
 }
 
 customElements.define("product-card", ProductCard);
